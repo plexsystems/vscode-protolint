@@ -7,13 +7,13 @@ function doLint(codeDocument: vscode.TextDocument, collection: vscode.Diagnostic
   const linter = new Linter(codeDocument);
   collection.clear();
 
-  linter.lint((errors: LinterError[]): void => {
+  linter.Lint((errors: LinterError[]): void => {
     if (!errors.length) {
       return;
     }
 
     const diagnostics = errors.map(error => {
-      return new vscode.Diagnostic(error.range, error.reason, vscode.DiagnosticSeverity.Warning);
+      return new vscode.Diagnostic(error.range, error.proto.reason, vscode.DiagnosticSeverity.Warning);
     })
 
     collection.set(codeDocument.uri, diagnostics);

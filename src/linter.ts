@@ -1,11 +1,11 @@
 import * as cp from 'child_process';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { ProtoError, parseProtoError } from './protoError'
 
 export interface LinterError {
-  line: number;
+  proto: ProtoError,
   range: vscode.Range
-  reason: string;
 }
 
 interface LinterHandler {
@@ -20,7 +20,7 @@ export default class Linter {
     this.codeDocument = document;
   }
 
-  public lint(handler: LinterHandler): void {
+  public Lint(handler: LinterHandler): void {
 
     const fileName = this.codeDocument.fileName;
 
@@ -29,6 +29,28 @@ export default class Linter {
       return;
     }
 
+    this.runProtoLint(fileName, handler);
+  }
+
+  private parseErrors(errorStr: string): LinterError[] {
+    let errors = errorStr.split('\n') || [];
+
+    var result = errors.reduce((previousError: any, currentError: any) => {
+      const parsedError = parseProtoError(currentError);
+
+      if (!parsedError.reason) {
+        return previousError;
+      }
+
+      const linterError: LinterError = this.createLinterError(parsedError)
+
+      return previousError.concat(linterError)
+    }, []);
+
+    return result;
+  }
+
+  private runProtoLint(fileName: string, handler: LinterHandler): void {
     const dirname = path.dirname(fileName);
     const cmd = `protolint lint "${dirname}"`;
 
@@ -38,33 +60,17 @@ export default class Linter {
       .catch((error) => handler(this.parseErrors(error)));
   }
 
-  private parseErrors(errorStr: string): LinterError[] {
-    let errors = errorStr.split('\n') || [];
+  private createLinterError(error: ProtoError): LinterError {
+    const linterError: LinterError = {
+      proto: error,
+      range: this.getErrorRange(error)
+    };
 
-    var result = errors.reduce((previousError: any, currentError: any) => {
-      const parsedError = this.buildLinterError(currentError);
-      return !parsedError ? previousError : previousError.concat(parsedError);
-    }, []);
-
-    return result;
+    return linterError;
   }
 
-  private buildLinterError(error: string): LinterError | null {
-
-    if (!error) {
-      return null;
-    }
-
-    // Errors are in the format:
-    // [path/to/file.proto:line:column] an error message is here
-    const errorMessage = error.split("]")[1];
-    const errorLine = parseInt(error.split(":")[1], 10);
-
-    return {
-      line: errorLine,
-      range: this.codeDocument.lineAt(errorLine - 1).range,
-      reason: errorMessage
-    };
+  private getErrorRange(error: ProtoError): vscode.Range {
+    return this.codeDocument.lineAt(error.line - 1).range
   }
 
   private exec(command: string) {
