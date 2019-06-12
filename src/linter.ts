@@ -1,5 +1,4 @@
 import * as cp from 'child_process';
-import * as path from 'path';
 import * as vscode from 'vscode';
 import { ProtoError, parseProtoError } from './protoError'
 
@@ -29,7 +28,7 @@ export default class Linter {
       return;
     }
 
-    this.runProtoLint(fileName, handler);
+    this.runProtoLint(handler);
   }
 
   private parseErrors(errorStr: string): LinterError[] {
@@ -49,9 +48,9 @@ export default class Linter {
     return result;
   }
 
-  private runProtoLint(fileName: string, handler: LinterHandler): void {
-    const dirname = path.dirname(fileName);
-    const cmd = `protolint lint "${dirname}"`;
+  private runProtoLint(handler: LinterHandler): void {
+    const currentFile = this.codeDocument.uri.fsPath;
+    const cmd = `protolint lint "${currentFile}"`;
 
     const result = this.exec(cmd);
     result
