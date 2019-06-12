@@ -20,7 +20,7 @@ export default class Linter {
     this.codeDocument = document;
   }
 
-  public Lint(handler: LinterHandler): void {
+  public lint(handler: LinterHandler): void {
 
     const fileName = this.codeDocument.fileName;
 
@@ -35,16 +35,15 @@ export default class Linter {
   private parseErrors(errorStr: string): LinterError[] {
     let errors = errorStr.split('\n') || [];
 
-    var result = errors.reduce((previousError: any, currentError: any) => {
+    var result = errors.reduce((errors: LinterError[], currentError: string) => {
       const parsedError = parseProtoError(currentError);
 
       if (!parsedError.reason) {
-        return previousError;
+        return errors;
       }
 
       const linterError: LinterError = this.createLinterError(parsedError)
-
-      return previousError.concat(linterError)
+      return errors.concat(linterError)
     }, []);
 
     return result;

@@ -7,7 +7,7 @@ function doLint(codeDocument: vscode.TextDocument, collection: vscode.Diagnostic
   const linter = new Linter(codeDocument);
   collection.clear();
 
-  linter.Lint((errors: LinterError[]): void => {
+  linter.lint((errors: LinterError[]): void => {
     if (!errors.length) {
       return;
     }
