@@ -1,4 +1,4 @@
-# vscode-protobuflinter [![License](https://img.shields.io/:license-mit-blue.svg)](https://github.com/jpreese/vscode-protobuflint/blob/master/LICENSE)
+# vscode-protobuflinter [![License](https://img.shields.io/:license-mit-blue.svg)](https://github.com/jpreese/vscode-protobuflint/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/jpreese/vscode-protobuflint.svg)](https://github.com/jpreese/vscode-protobuflint/releases)
 
 ![protobuflinter_logo](img/protobuflint_logo128.png)
 
