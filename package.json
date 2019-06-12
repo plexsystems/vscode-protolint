@@ -1,0 +1,41 @@
+{
+    "name": "vscode-protobuflint",
+    "displayName": "vscode-protobuflint",
+    "description": "Lint your protocol buffer files using protolint (https://github.com/yoheimuta/protolint)",
+    "repository": {
+        "url": "https://github.com/jpreese/vscode-protolint"
+    },
+    "version": "1.0.0",
+    "publisher": "jpreese",
+    "engines": {
+        "vscode": "^1.25.0"
+    },
+    "categories": [
+        "Linters"
+    ],
+    "activationEvents": [
+        "onLanguage:proto3"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.protobuflint",
+                "title": "VSCode Protobuf Linter"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "tslint": "^5.8.0",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    }
+}
