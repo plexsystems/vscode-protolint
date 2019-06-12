@@ -1,3 +1,8 @@
 **/*.ts
-**/tsconfig.json
-!file.ts
+**/*.js.map
+.vscode/**
+out/test/**
+img/**
+tsconfig.json
+tslint.json
+.gitignore

@@ -6,7 +6,7 @@
   "homepage": "https://github.com/jpreese/vscode-protobuflint",
   "version": "1.0.0",
   "publisher": "jpreese",
-  "icon": "img/protobuflint_logo128.png",
+  "icon": "icon/protobuflint_logo128.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/jpreese/vscode-protobuflint.git"
@@ -29,7 +29,7 @@
   "activationEvents": [
     "onLanguage:proto3"
   ],
-  "main": "./out/extension",
+  "main": "./out/src/extension",
   "contributes": {
     "commands": [
       {
@@ -40,7 +40,8 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "tsc",
+    "precompile": "rimraf ./out",
     "watch": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && mocha out/test/*.test.js"
@@ -49,6 +50,7 @@
     "typescript": "^2.6.1",
     "vscode": "^1.1.6",
     "tslint": "^5.8.0",
+    "rimraf": "^2.6.3",
     "@types/node": "^7.0.43",
     "@types/mocha": "^2.2.42"
   }
