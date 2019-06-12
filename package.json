@@ -3,12 +3,12 @@
     "displayName": "vscode-protobuflint",
     "description": "Lint your protocol buffer files using protolint (https://github.com/yoheimuta/protolint)",
     "repository": {
-        "url": "https://github.com/jpreese/vscode-protolint"
+        "url": "https://github.com/jpreese/vscode-protobuflint"
     },
     "version": "1.0.0",
     "publisher": "jpreese",
     "engines": {
-        "vscode": "^1.25.0"
+        "vscode": "^1.0.0"
     },
     "categories": [
         "Linters"
