@@ -1,14 +1,11 @@
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
 import { ProtoError, parseProtoError } from './protoError'
+import * as util from 'util';
 
 export interface LinterError {
   proto: ProtoError,
   range: vscode.Range
-}
-
-interface LinterHandler {
-  (errors: LinterError[]): void;
 }
 
 export default class Linter {
@@ -19,16 +16,14 @@ export default class Linter {
     this.codeDocument = document;
   }
 
-  public lint(handler: LinterHandler): void {
-
-    const fileName = this.codeDocument.fileName;
-
-    const fileExtension = fileName.split('.').pop();
-    if (fileExtension !== "proto") {
-      return;
+  public async lint(): Promise<LinterError[]> {
+    const errors = await this.runProtoLint();
+    if (!errors) {
+      return [];
     }
 
-    this.runProtoLint(handler);
+    const lintingErrors: LinterError[] = this.parseErrors(errors);
+    return lintingErrors;
   }
 
   private parseErrors(errorStr: string): LinterError[] {
@@ -48,14 +43,15 @@ export default class Linter {
     return result;
   }
 
-  private runProtoLint(handler: LinterHandler): void {
+  private async runProtoLint(): Promise<string> {
     const currentFile = this.codeDocument.uri.fsPath;
+    const exec = util.promisify(cp.exec)
     const cmd = `protolint lint "${currentFile}"`;
 
-    const result = this.exec(cmd);
-    result
-      .then(() => handler([]))
-      .catch((error) => handler(this.parseErrors(error)));
+    let lintResults: string = "";
+    await exec(cmd).catch((error) => lintResults = error.stderr)
+
+    return lintResults;
   }
 
   private createLinterError(error: ProtoError): LinterError {
@@ -69,17 +65,5 @@ export default class Linter {
 
   private getErrorRange(error: ProtoError): vscode.Range {
     return this.codeDocument.lineAt(error.line - 1).range
-  }
-
-  private exec(command: string) {
-    return new Promise(function (resolve, reject) {
-      cp.exec(command, (err: Error, stdout: string, stderr: string) => {
-        if (!err) {
-          resolve();
-          return;
-        }
-        reject(stderr);
-      });
-    });
   }
 }
