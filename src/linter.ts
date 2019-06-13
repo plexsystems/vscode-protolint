@@ -49,7 +49,7 @@ export default class Linter {
     const cmd = `protolint lint "${currentFile}"`;
 
     let lintResults: string = "";
-    await exec(cmd).catch((error) => lintResults = error.stderr)
+    await exec(cmd).catch((error: any) => lintResults = error.stderr)
 
     return lintResults;
   }
