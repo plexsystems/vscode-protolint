@@ -11,21 +11,18 @@ async function doLint(codeDocument: vscode.TextDocument, collection: vscode.Diag
     return new vscode.Diagnostic(error.range, error.proto.reason, vscode.DiagnosticSeverity.Warning);
   });
 
+  collection.clear();
   collection.set(codeDocument.uri, diagnostics);
 }
 
 
 export function activate(context: vscode.ExtensionContext) {
-
   const commandId = 'extension.protobuflint';
   const diagnosticCollection = vscode.languages.createDiagnosticCollection(commandId);
 
   let events = vscode.commands.registerCommand(commandId, () => {
     vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-      diagnosticCollection.clear();
-
-      const fileExtension = document.fileName.split('.').pop();
-      if (fileExtension !== "proto") {
+      if(document.languageId !== 'proto3') {
         return;
       }
 
