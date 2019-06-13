@@ -4,7 +4,6 @@ export interface ProtoError {
 }
 
 export function parseProtoError(error: string): ProtoError {
-
   if (!error) {
     return getEmptyProtoError();
   }
@@ -15,7 +14,7 @@ export function parseProtoError(error: string): ProtoError {
   const protoError: ProtoError = {
     line: errorLine,
     reason: errorReason
-  }
+  };
 
   return protoError;
 }
@@ -24,7 +23,7 @@ export function getEmptyProtoError(): ProtoError {
   const emptyProtoError: ProtoError = {
     line: 0,
     reason: ""
-  }
+  };
 
   return emptyProtoError;
 }

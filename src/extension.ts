@@ -13,7 +13,6 @@ async function doLint(codeDocument: vscode.TextDocument, collection: vscode.Diag
   collection.set(codeDocument.uri, diagnostics);
 }
 
-
 export function activate(context: vscode.ExtensionContext) {
   const commandId = 'extension.protobuflint';
   const diagnosticCollection = vscode.languages.createDiagnosticCollection(commandId);

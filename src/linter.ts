@@ -1,15 +1,14 @@
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
-import { ProtoError, parseProtoError } from './protoError'
 import * as util from 'util';
+import { ProtoError, parseProtoError } from './protoError';
 
 export interface LinterError {
-  proto: ProtoError,
-  range: vscode.Range
+  proto: ProtoError;
+  range: vscode.Range;
 }
 
 export default class Linter {
-
   private codeDocument: vscode.TextDocument;
 
   constructor(document: vscode.TextDocument) {
@@ -31,13 +30,12 @@ export default class Linter {
 
     var result = errors.reduce((errors: LinterError[], currentError: string) => {
       const parsedError = parseProtoError(currentError);
-
       if (!parsedError.reason) {
         return errors;
       }
 
-      const linterError: LinterError = this.createLinterError(parsedError)
-      return errors.concat(linterError)
+      const linterError: LinterError = this.createLinterError(parsedError);
+      return errors.concat(linterError);
     }, []);
 
     return result;
@@ -45,11 +43,11 @@ export default class Linter {
 
   private async runProtoLint(): Promise<string> {
     const currentFile = this.codeDocument.uri.fsPath;
-    const exec = util.promisify(cp.exec)
+    const exec = util.promisify(cp.exec);
     const cmd = `protolint lint "${currentFile}"`;
 
     let lintResults: string = "";
-    await exec(cmd).catch((error: any) => lintResults = error.stderr)
+    await exec(cmd).catch((error: any) => lintResults = error.stderr);
 
     return lintResults;
   }
@@ -64,6 +62,6 @@ export default class Linter {
   }
 
   private getErrorRange(error: ProtoError): vscode.Range {
-    return this.codeDocument.lineAt(error.line - 1).range
+    return this.codeDocument.lineAt(error.line - 1).range;
   }
 }
