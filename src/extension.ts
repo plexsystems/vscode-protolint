@@ -1,5 +1,3 @@
-'use strict';
-
 import * as vscode from 'vscode';
 import Linter, { LinterError } from './linter';
 
