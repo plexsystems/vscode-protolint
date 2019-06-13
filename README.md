@@ -13,11 +13,10 @@ lint:
 
     add:
       - MESSAGE_NAMES_UPPER_CAMEL_CASE
+      - SERVICE_NAMES_UPPER_CAMEL_CASE
 ```
 
-Renders the following display within visual studio code
-
-![protobuflintexample](img/protobuflint_screen.png)
+![protobuflintexample](img/protobuflint_demo.gif)
 
 ## Installation
 
