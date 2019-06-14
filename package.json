@@ -1,18 +1,18 @@
 {
-  "name": "vscode-protobuflint",
-  "displayName": "protobuflint",
-  "description": "Lint your protocol buffers using protolint (https://github.com/yoheimuta/protolint)",
+  "name": "vscode-protolint",
+  "displayName": "Proto Lint",
+  "description": "Lint your protobufs using protolint",
   "license": "MIT",
-  "homepage": "https://github.com/jpreese/vscode-protobuflint",
-  "version": "1.0.0",
-  "publisher": "jpreese",
+  "homepage": "https://github.com/plexsystems/vscode-protolint",
+  "version": "0.1.0",
+  "publisher": "Plex",
   "icon": "icon/protobuflint_logo128.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jpreese/vscode-protobuflint.git"
+    "url": "https://github.com/plexsystems/vscode-protolint.git"
   },
   "bugs": {
-    "url": "https://github.com/jpreese/vscode-protobuflint/issues"
+    "url": "https://github.com/plexsystems/vscode-protolint/issues"
   },
   "engines": {
     "vscode": "^1.0.0"
