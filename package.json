@@ -5,7 +5,7 @@
   "license": "MIT",
   "homepage": "https://github.com/plexsystems/vscode-protolint",
   "version": "0.1.0",
-  "publisher": "Plex",
+  "publisher": "plex",
   "icon": "icon/protobuflint_logo128.png",
   "repository": {
     "type": "git",
