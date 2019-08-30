@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   let events = vscode.commands.registerCommand(commandId, () => {
     vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-      if(document.languageId !== 'proto3') {
+      if (!document.fileName.endsWith(".proto")) {
         return;
       }
 
