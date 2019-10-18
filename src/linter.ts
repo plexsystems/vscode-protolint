@@ -9,10 +9,12 @@ export interface LinterError {
 }
 
 export default class Linter {
+  private workspaceFolder: any;
   private codeDocument: vscode.TextDocument;
 
   constructor(document: vscode.TextDocument) {
     this.codeDocument = document;
+    this.workspaceFolder = vscode.workspace.workspaceFolders[0];
   }
 
   public async lint(): Promise<LinterError[]> {
@@ -42,9 +44,10 @@ export default class Linter {
   }
 
   private async runProtoLint(): Promise<string> {
-    const currentFile = this.codeDocument.uri.fsPath;
+    const currentFilePath = this.codeDocument.uri.fsPath;
+    const workspaceRootPath = this.workspaceFolder.uri.fsPath;
     const exec = util.promisify(cp.exec);
-    const cmd = `protolint lint "${currentFile}"`;
+    const cmd = `protolint lint -config_dir_path=${workspaceRootPath} ${currentFilePath}`;
 
     let lintResults: string = "";
     await exec(cmd).catch((error: any) => lintResults = error.stderr);
