@@ -16,7 +16,7 @@ lint:
       - SERVICE_NAMES_UPPER_CAMEL_CASE
 ```
 
-![protobuflintexample](img/protobuflint_demo.gif)
+![protobuflintexample](img/protolint_demo.gif)
 
 ## Installation
 
