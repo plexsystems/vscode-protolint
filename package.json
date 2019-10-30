@@ -27,7 +27,8 @@
     "lint"
   ],
   "activationEvents": [
-    "onLanguage:proto3"
+    "onLanguage:proto3",
+    "onLanguage:proto"
   ],
   "main": "./out/src/extension",
   "scripts": {
