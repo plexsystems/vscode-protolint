@@ -40,13 +40,13 @@
     "test": "npm run compile && mocha out/test/*.test.js"
   },
   "devDependencies": {
-    "@types/node": "^12.0.8",
     "@types/mocha": "^5.2.7",
+    "@types/node": "^12.0.8",
     "@types/vscode": "^1.14.0",
-    "typescript": "^3.5.1",
-    "vscode": "^1.1.6",
-    "tslint": "^5.8.0",
+    "mocha": "^7.1.1",
     "rimraf": "^2.6.3",
-    "mocha": "^6.2.2"
+    "tslint": "^5.8.0",
+    "typescript": "^3.5.1",
+    "vscode": "^1.1.6"
   }
 }
