@@ -8,7 +8,7 @@ export function parseProtoError(error: string): ProtoError {
     return getEmptyProtoError();
   }
 
-  const errorLine = parseInt(error.split(":")[1], 10);
+  const errorLine = parseInt(error.split(".proto:")[1], 10);
   const errorReason = error.split("] ")[1];
 
   const protoError: ProtoError = {

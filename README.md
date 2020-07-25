@@ -28,8 +28,10 @@ NOTE: protolint must be installed and available in your PATH
 
 ## Local Development
 
-To compile the solution locally run `npm run compile`
+Before running any of the below commands, make sure you have installed the required dependencies with `npm install`
 
-To run the unit tests run `npm run test`
+- To compile the solution locally run `npm run compile`
 
-To run the extension in a Visual Studio Code development environment press `F5` in Visual Studio Code
+- To run the unit tests run `npm run test`
+
+- To run the extension in a Visual Studio Code development environment press `F5` in Visual Studio Code
