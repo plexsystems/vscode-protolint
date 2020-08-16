@@ -46,10 +46,10 @@ export default class Linter {
     const exec = util.promisify(cp.exec);
 
     if (!vscode.workspace.workspaceFolders) {
-      return ""
+      return "";
     }
-    
-    let workspaceFolder: vscode.WorkspaceFolder = vscode.workspace.workspaceFolders[0];
+
+    let workspaceFolder: vscode.WorkspaceFolder = vscode.workspace.getWorkspaceFolder(this.codeDocument.uri) || vscode.workspace.workspaceFolders[0];
     const cmd = `protolint lint -config_dir_path="${workspaceFolder.uri.fsPath}" ${currentFile}`;
 
     let lintResults: string = "";
