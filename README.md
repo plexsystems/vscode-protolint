@@ -22,9 +22,11 @@ lint:
 
 This extension can be installed through the Visual Studio [marketplace](https://marketplace.visualstudio.com/items?itemName=Plex.vscode-protolint). Alternatively, a VSIX installer is available on the [releases](https://github.com/plexsystems/vscode-protolint/releases) page.
 
-```
-NOTE: protolint must be installed and available in your PATH
-```
+Also ensure that:
+
+- [protolint](https://github.com/yoheimuta/protolint) is installed and available in your PATH.
+
+- Protobuf support is added to your Visual Studio Code. [vscode-proto3](https://github.com/zxh0/vscode-proto3) works well.
 
 ## Local Development
 
