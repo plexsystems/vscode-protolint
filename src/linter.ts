@@ -24,7 +24,8 @@ export default class Linter {
     // protolint returns "not found config file by searching" when it is
     // executed and a configuration file cannot be found.
     if (errors.includes("not found config")) {
-      vscode.window.showErrorMessage(errors)
+      vscode.window.showErrorMessage(errors);
+      return [];
     }
 
     const lintingErrors: LinterError[] = this.parseErrors(errors);

@@ -13,15 +13,11 @@ export function activate(context: vscode.ExtensionContext) {
   const diagnosticCollection = vscode.languages.createDiagnosticCollection(commandId);
   let events = vscode.commands.registerCommand(commandId, () => {
     vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-      if(document.languageId === 'proto3' || document.languageId === 'proto') {
-        doLint(document, diagnosticCollection);
-      }
+      doLint(document, diagnosticCollection);
     });
 
     vscode.workspace.onDidOpenTextDocument((document: vscode.TextDocument) => {
-      if(document.languageId === 'proto3' || document.languageId === 'proto') {
-        doLint(document, diagnosticCollection);
-      }
+      doLint(document, diagnosticCollection);
     });
   });
 
@@ -30,6 +26,10 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 async function doLint(codeDocument: vscode.TextDocument, collection: vscode.DiagnosticCollection): Promise<void> {
+  if(codeDocument.languageId === 'proto3' || codeDocument.languageId === 'proto') {
+    return;
+  }
+
   const linter = new Linter(codeDocument);
   const errors: LinterError[] = await linter.lint();
   const diagnostics = errors.map(error => {
