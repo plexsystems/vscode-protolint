@@ -36,7 +36,7 @@ function runLint() {
   // We only want to run protolint on documents that are known to be
   // protocol buffer files.
   const doc = editor.document;
-  if(doc.languageId !== 'proto3' && doc.languageId !== 'proto') {
+  if (doc.languageId !== 'proto3' && doc.languageId !== 'proto') {
     return;
   }
 
