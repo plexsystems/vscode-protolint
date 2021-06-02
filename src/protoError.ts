@@ -3,6 +3,11 @@ export interface ProtoError {
   reason: string;
 }
 
+// parseProtoError takes the an error message from protolint
+// and attempts to parse it as a linting error.
+//
+// Linting errors are in the format:
+// [path/to/file.proto:line:column] an error message is here
 export function parseProtoError(error: string): ProtoError {
   if (!error) {
     return getEmptyProtoError();

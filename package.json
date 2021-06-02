@@ -31,6 +31,14 @@
     "onLanguage:proto"
   ],
   "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "protolint.lint",
+        "title": "Protolint: Lint protobuf file"
+      }
+    ]
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc",
