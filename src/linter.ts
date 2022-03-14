@@ -45,7 +45,7 @@ export default class Linter {
 
     // When there is no defined protolint path, just return the protolint binary which will
     // call protolint directly and assume that its available in the user's PATH.
-    return "protolint"
+    return "protolint";
   }
 
   private async runProtoLint(): Promise<string> {
@@ -53,10 +53,10 @@ export default class Linter {
       return "";
     }
 
-    let currentFile = this.codeDocument.uri.fsPath
-    let currentDirectory = path.dirname(currentFile)
+    let currentFile = this.codeDocument.uri.fsPath;
+    let currentDirectory = path.dirname(currentFile);
 
-    let protoLintPath = this.getProtoLintPath()
+    let protoLintPath = this.getProtoLintPath();
     const cmd = `${protoLintPath} lint "${currentFile}"`;
 
     // Execute the protolint binary and store the output from standard error.
