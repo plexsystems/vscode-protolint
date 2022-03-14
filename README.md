@@ -24,7 +24,7 @@ This extension can be installed through the Visual Studio [marketplace](https://
 
 Also ensure that:
 
-- [protolint](https://github.com/yoheimuta/protolint) is installed and available in your PATH.
+- [protolint](https://github.com/yoheimuta/protolint) is installed.
 
 - Protobuf support is added to your Visual Studio Code. [vscode-proto3](https://github.com/zxh0/vscode-proto3) works well.
 
