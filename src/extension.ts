@@ -50,6 +50,5 @@ async function doLint(codeDocument: vscode.TextDocument, collection: vscode.Diag
     return new vscode.Diagnostic(error.range, error.proto.reason, vscode.DiagnosticSeverity.Warning);
   });
 
-  collection.clear();
   collection.set(codeDocument.uri, diagnostics);
 }

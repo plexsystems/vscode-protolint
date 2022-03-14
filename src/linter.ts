@@ -1,6 +1,8 @@
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
 import * as util from 'util';
+import * as path from 'path';
+
 import { ProtoError, parseProtoError } from './protoError';
 
 export interface LinterError {
@@ -35,21 +37,38 @@ export default class Linter {
     return lintingErrors;
   }
 
+  private getProtoLintPath(): string {
+    let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
+    if (protoLintPath) {
+      return protoLintPath;
+    }
+
+    // When there is no defined protolint path, just return the protolint binary which will
+    // call protolint directly and assume that its available in the user's PATH.
+    return "protolint"
+  }
+
   private async runProtoLint(): Promise<string> {
     if (!vscode.workspace.workspaceFolders) {
       return "";
     }
 
-    let workspaceFolder: vscode.WorkspaceFolder = vscode.workspace.getWorkspaceFolder(this.codeDocument.uri) || vscode.workspace.workspaceFolders[0];
-    const cmd = `protolint lint -config_dir_path="${workspaceFolder.uri.fsPath}" "${this.codeDocument.uri.fsPath}"`;
+    let currentFile = this.codeDocument.uri.fsPath
+    let currentDirectory = path.dirname(currentFile)
 
-    let lintResults: string = "";
+    let protoLintPath = this.getProtoLintPath()
+    const cmd = `${protoLintPath} lint "${currentFile}"`;
 
     // Execute the protolint binary and store the output from standard error.
+    //
     // The output could either be an error from using the binary improperly, such as unable to find
     // a configuration, or linting errors.
     const exec = util.promisify(cp.exec);
-    await exec(cmd).catch((error: any) => lintResults = error.stderr);
+    let lintResults: string = "";
+
+    await exec(cmd, {
+      cwd: currentDirectory
+    }).catch((error: any) => lintResults = error.stderr);
 
     return lintResults;
   }

@@ -2,4 +2,14 @@ syntax = "proto3";
 
 package service;
 
-message myMessage { }
+message ServiceRequest {
+
+}
+
+message ServiceResponse {
+
+}
+
+service MyService {
+  rpc Do(ServiceRequest) returns (ServiceResponse) { }
+}
