@@ -39,6 +39,20 @@
       }
     ]
   },
+  "configuration": {
+    "type": "object",
+    "title": "protolint configuration",
+    "properties": {
+      "protolint.path": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "default": "$PATH",
+        "description": "Path of the protolint executable. Defaults to $PATH."
+      }
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc",
