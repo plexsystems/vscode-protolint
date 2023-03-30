@@ -4,7 +4,7 @@
   "description": "Lint your protobufs using protolint",
   "license": "MIT",
   "homepage": "https://github.com/plexsystems/vscode-protolint",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "publisher": "plex",
   "icon": "icon/protolint_logo128.png",
   "repository": {
@@ -37,19 +37,19 @@
         "command": "protolint.lint",
         "title": "Protolint: Lint protobuf file"
       }
-    ]
-  },
-  "configuration": {
-    "type": "object",
-    "title": "protolint configuration",
-    "properties": {
-      "protolint.path": {
-        "type": [
-          "string",
-          "null"
-        ],
-        "default": "$PATH",
-        "description": "Path of the protolint executable. Defaults to $PATH."
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "protolint",
+      "properties": {
+        "protolint.path": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Path of the protolint executable. Defaults to null."
+        }
       }
     }
   },
