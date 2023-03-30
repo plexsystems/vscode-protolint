@@ -28,6 +28,10 @@ Also ensure that:
 
 - Protobuf support is added to your Visual Studio Code. [vscode-proto3](https://github.com/zxh0/vscode-proto3) works well.
 
+## Configuration
+
+- `protolint.path`: The location of the `protolint` binary. Default: `System PATH`.
+
 ## Local Development
 
 Before running any of the below commands, make sure you have installed the required dependencies with `npm install`
