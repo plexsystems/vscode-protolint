@@ -33,19 +33,7 @@ export default class Linter {
       return [];
     }
 
-
     return lintingErrors;
-  }
-
-  private getProtoLintPath(): string {
-    let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
-    if (protoLintPath) {
-      return protoLintPath;
-    }
-
-    // When there is no defined protolint path, just return the protolint binary which will
-    // call protolint directly and assume that its available in the user's PATH.
-    return "protolint";
   }
 
   private async runProtoLint(): Promise<string> {
@@ -56,7 +44,7 @@ export default class Linter {
     let currentFile = this.codeDocument.uri.fsPath;
     let currentDirectory = path.dirname(currentFile);
 
-    let protoLintPath = this.getProtoLintPath();
+    let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
     const cmd = `${protoLintPath} lint "${currentFile}"`;
 
     // Execute the protolint binary and store the output from standard error.

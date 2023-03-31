@@ -5,15 +5,6 @@ import Linter, { LinterError } from './linter';
 const diagnosticCollection = vscode.languages.createDiagnosticCollection("protolint");
 
 export function activate(context: vscode.ExtensionContext) {
-
-  // Verify that protolint can be successfully executed on the host machine by running the version command.
-  // In the event the binary cannot be executed, tell the user where to download protolint from.
-  const result = cp.spawnSync('protolint', ['version']);
-  if (result.status !== 0) {
-    vscode.window.showErrorMessage("protolint was not detected. Download from: https://github.com/yoheimuta/protolint");
-    return;
-  }
-
   vscode.commands.registerCommand('protolint.lint', runLint);
 
   vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
@@ -25,6 +16,20 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.window.onDidChangeActiveTextEditor((e: vscode.TextEditor | undefined) => {
     vscode.commands.executeCommand('protolint.lint');
   });
+
+  // Verify that protolint can be successfully executed on the host machine by running the version command.
+  // In the event the binary cannot be executed, tell the user where to download protolint from.
+  let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
+  if (!protoLintPath) {
+    vscode.window.showErrorMessage("protolint path was not set");
+    return;
+  }
+
+  const result = cp.spawnSync(protoLintPath, ['version']);
+  if (result.status !== 0) {
+    vscode.window.showErrorMessage("protolint was not detected using path `" + protoLintPath + "`. Download from: https://github.com/yoheimuta/protolint");
+    return;
+  }
 }
 
 function runLint() {
