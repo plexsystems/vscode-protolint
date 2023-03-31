@@ -45,6 +45,10 @@ export default class Linter {
     let currentDirectory = path.dirname(currentFile);
 
     let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
+    if (!protoLintPath) {
+      protoLintPath = "protolint"
+    }
+
     const cmd = `${protoLintPath} lint "${currentFile}"`;
 
     // Execute the protolint binary and store the output from standard error.

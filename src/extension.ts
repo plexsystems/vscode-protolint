@@ -21,8 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
   // In the event the binary cannot be executed, tell the user where to download protolint from.
   let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
   if (!protoLintPath) {
-    vscode.window.showErrorMessage("protolint path was not set");
-    return;
+    protoLintPath = "protolint"
   }
 
   const result = cp.spawnSync(protoLintPath, ['version']);
