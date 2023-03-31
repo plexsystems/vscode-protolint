@@ -43,12 +43,9 @@
       "title": "protolint",
       "properties": {
         "protolint.path": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
-          "description": "Path of the protolint executable. Defaults to null."
+          "type":  "string",
+          "default": "protolint",
+          "description": "Path of the protolint executable."
         }
       }
     }
