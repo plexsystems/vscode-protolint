@@ -15,7 +15,7 @@
     "url": "https://github.com/plexsystems/vscode-protolint/issues"
   },
   "engines": {
-    "vscode": "^1.14.0"
+    "vscode": "^1.31.0"
   },
   "categories": [
     "Linters"
@@ -39,13 +39,13 @@
       }
     ],
     "configuration": {
-      "type": "object",
       "title": "protolint",
       "properties": {
         "protolint.path": {
           "type":  "string",
+          "scope": "machine",
           "default": "protolint",
-          "description": "Path of the protolint executable."
+          "markdownDescription": "Path of the protolint executable.\n\nDownload from: https://github.com/yoheimuta/protolint"
         }
       }
     }

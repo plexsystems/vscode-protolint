@@ -1,15 +1,16 @@
 import * as vscode from 'vscode';
-import * as cp from 'child_process';
+
 import Linter, { LinterError } from './linter';
+import { pickPathConfiguration, isExecutableAvailable } from './helpers';
 
 const diagnosticCollection = vscode.languages.createDiagnosticCollection("protolint");
 
 export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand('protolint.lint', runLint);
 
-  vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-    vscode.commands.executeCommand('protolint.lint');
-  });
+  // vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+  //   vscode.commands.executeCommand('protolint.lint');
+  // });
 
   // Run the linter when the user changes the file that they are currently viewing
   // so that the lint results show up immediately.
@@ -17,24 +18,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('protolint.lint');
   });
 
-  // Verify that protolint can be successfully executed on the host machine by running the version command.
-  // In the event the binary cannot be executed, tell the user where to download protolint from.
-  let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
-  if (!protoLintPath) {
-    protoLintPath = "protolint"
-  }
-
-  const result = cp.spawnSync(protoLintPath, ['version']);
-  if (result.status !== 0) {
-    vscode.window.showErrorMessage("protolint was not detected using path `" + protoLintPath + "`. Download from: https://github.com/yoheimuta/protolint");
-    return;
-  }
+  vscode.commands.executeCommand('protolint.lint');
 }
 
-function runLint() {
+async function runLint() {
   let editor = vscode.window.activeTextEditor;
   if (!editor) {
-      return;
+    return;
   }
 
   // We only want to run protolint on documents that are known to be
@@ -42,6 +32,17 @@ function runLint() {
   const doc = editor.document;
   if (doc.languageId !== 'proto3' && doc.languageId !== 'proto') {
     return;
+  }
+
+  if (isExecutableAvailable() === undefined) {
+    try {
+      const result = await pickPathConfiguration();
+      if (result === undefined) {
+        return;
+      }
+    } catch (error) {
+      return;
+    }
   }
 
   doLint(doc, diagnosticCollection);
