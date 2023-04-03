@@ -14,8 +14,9 @@ export function activate(context: vscode.ExtensionContext) {
     // E.g. saving the user's configuration via VS Code API also fires this event
     // with `jsonc` languageId, and we get an excessive error notification upon
     // saving the correct path.
-    if (!isTargetLanguage(document.languageId))
+    if (!isTargetLanguage(document.languageId)) {
       return;
+    }
 
     vscode.commands.executeCommand('protolint.lint');
   });
@@ -45,8 +46,9 @@ async function runLint() {
   if (isExecutableAvailable() === undefined) {
     try {
       const result = await pickPathConfiguration();
-      if (result === undefined)
+      if (result === undefined) {
         return;
+      }
     } catch (error) {
       return;
     }
