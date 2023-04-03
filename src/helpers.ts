@@ -1,27 +1,24 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
 
-import { PROTOLINT_REPO_URI, PATH_CONFIGURATION_KEY, FAILOVER_PATH } from './constants';
+import { PROTOLINT_REPO_URI, PATH_CONFIGURATION_KEY, FAILOVER_PATH, TARGET_LANGUAGES } from './constants';
 
 export function isExecutableValid(path: string): boolean {
   const result = cp.spawnSync(path, ['version']);
-  if (result.status !== 0) {
+  if (result.status !== 0)
     return false;
-  }
 
   return true;
 }
 
 export function isExecutableAvailable(): string | undefined {
   let executablePath = vscode.workspace.getConfiguration('protolint').get<string>(PATH_CONFIGURATION_KEY);
-  if (!executablePath) {
+  if (!executablePath)
     // Failover when the key is missing in the configuration.
     executablePath = FAILOVER_PATH;
-  }
 
-  if (isExecutableValid(executablePath)) {
+  if (isExecutableValid(executablePath))
     return executablePath;
-  };
 
   return undefined;
 }
@@ -39,9 +36,8 @@ export async function locateExecutable(): Promise<string | undefined> {
       openLabel: "Use for linting"
     });
 
-    if (!userInput || userInput.length < 1) {
+    if (!userInput || userInput.length < 1)
       return undefined;
-    }
 
     const path = userInput[0].fsPath;
 
@@ -100,4 +96,12 @@ export async function pickPathConfiguration(): Promise<string | undefined> {
   }
 
   return undefined;
+}
+
+// Returns true if the specified languageId is the target on for the extension.
+export function isTargetLanguage(languageId: string): boolean {
+  if (TARGET_LANGUAGES.some(item => item === languageId))
+    return true;
+
+  return false;
 }

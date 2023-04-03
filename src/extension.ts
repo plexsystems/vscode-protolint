@@ -1,16 +1,24 @@
 import * as vscode from 'vscode';
 
 import Linter, { LinterError } from './linter';
-import { pickPathConfiguration, isExecutableAvailable } from './helpers';
+import { pickPathConfiguration, isExecutableAvailable, isTargetLanguage } from './helpers';
 
 const diagnosticCollection = vscode.languages.createDiagnosticCollection("protolint");
 
 export function activate(context: vscode.ExtensionContext) {
-  vscode.commands.registerCommand('protolint.lint', runLint);
+  const lintCommand = vscode.commands.registerCommand('protolint.lint', runLint);
+  context.subscriptions.push(lintCommand);
 
-  // vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-  //   vscode.commands.executeCommand('protolint.lint');
-  // });
+  vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+    // We need to filter the events by languageId.
+    // E.g. saving the user's configuration via VS Code API also fires this event
+    // with `jsonc` languageId, and we get an excessive error notification upon
+    // saving the correct path.
+    if (!isTargetLanguage(document.languageId))
+      return;
+
+    vscode.commands.executeCommand('protolint.lint');
+  });
 
   // Run the linter when the user changes the file that they are currently viewing
   // so that the lint results show up immediately.
@@ -30,16 +38,15 @@ async function runLint() {
   // We only want to run protolint on documents that are known to be
   // protocol buffer files.
   const doc = editor.document;
-  if (doc.languageId !== 'proto3' && doc.languageId !== 'proto') {
+  if (!isTargetLanguage(doc.languageId)) {
     return;
   }
 
   if (isExecutableAvailable() === undefined) {
     try {
       const result = await pickPathConfiguration();
-      if (result === undefined) {
+      if (result === undefined)
         return;
-      }
     } catch (error) {
       return;
     }
