@@ -48,6 +48,14 @@
           "markdownDescription": "Path of the protolint executable.\n\nDownload from: https://github.com/yoheimuta/protolint"
         }
       }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "protolint.lint",
+          "when": "editorLangId == proto3 || editorLangId == proto"
+        }
+      ]
     }
   },
   "scripts": {
