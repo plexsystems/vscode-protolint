@@ -38,6 +38,15 @@
         "title": "Protolint: Lint protobuf file"
       }
     ],
+    "keybindings":[
+      {
+        "command": "protolint.lint",
+        "key": "alt+shift+l",
+        "mac": "alt+shift+l",
+        "linux": "alt+shift+l",
+        "when": "editorTextFocus"
+      }
+    ],
     "configuration": {
       "title": "protolint",
       "properties": {
