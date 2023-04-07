@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
   subscribeToDocumentChanges(context, diagnosticCollection);
 }
 
-async function runLint() {
+function runLint() {
   let editor = vscode.window.activeTextEditor;
   if (!editor) {
     return;
