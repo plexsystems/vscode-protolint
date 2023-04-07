@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
 
-import { PROTOLINT_REPO_URI, PATH_CONFIGURATION_KEY, FAILOVER_PATH, TARGET_LANGUAGES } from './constants';
+import { PROTOLINT_REPO_URI, PATH_CONFIGURATION_KEY, FAILOVER_PATH } from './constants';
 
 export function isExecutableValid(path: string): boolean {
   const result = cp.spawnSync(path, ['version']);
@@ -100,13 +100,4 @@ export async function pickPathConfiguration(): Promise<string | undefined> {
   }
 
   return undefined;
-}
-
-// Returns true if the specified languageId is the target one for the extension.
-export function isTargetLanguage(languageId: string): boolean {
-  if (TARGET_LANGUAGES.some(item => item === languageId)) {
-    return true;
-  }
-
-  return false;
 }
