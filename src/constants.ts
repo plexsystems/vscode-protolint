@@ -12,4 +12,4 @@ export const FAILOVER_PATH = "protolint";
 export const PROTOBUF_SELECTOR: DocumentSelector = [
     { language: "proto3", scheme: "file" },
     { language: "proto", scheme: "file" }
-]
+];
