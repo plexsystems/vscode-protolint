@@ -24,15 +24,21 @@ export function subscribeToDocumentChanges(context: vscode.ExtensionContext, dia
 
   context.subscriptions.push(
     vscode.workspace.onDidSaveTextDocument(
-      doc => {
-        refreshDiagnostics(doc, diagnosticCollection);
-      }
+      doc => refreshDiagnostics(doc, diagnosticCollection)
     )
   );
 
   context.subscriptions.push(
     vscode.workspace.onDidCloseTextDocument(
       doc => diagnosticCollection.delete(doc.uri)
+    )
+  );
+
+  // Refresh the diagnostics when the document language is changed 
+  // to protocol buffers.
+  context.subscriptions.push(
+    vscode.workspace.onDidOpenTextDocument(
+      doc => refreshDiagnostics(doc, diagnosticCollection)
     )
   );
 
