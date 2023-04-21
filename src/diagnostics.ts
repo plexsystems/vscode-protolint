@@ -5,9 +5,12 @@
 import * as vscode from 'vscode';
 import Linter, { LinterError } from './linter';
 import { PROTOBUF_SELECTOR } from './constants';
-import { isExecutableAvailable, pickPathConfiguration } from './helpers';
+import { pickPathConfiguration } from './helpers';
 
-export function subscribeToDocumentChanges(context: vscode.ExtensionContext, diagnosticCollection: vscode.DiagnosticCollection): void {
+export function subscribeToDocumentChanges(
+  context: vscode.ExtensionContext,
+  diagnosticCollection: vscode.DiagnosticCollection
+): void {
   if (vscode.window.activeTextEditor) {
     refreshDiagnostics(vscode.window.activeTextEditor.document, diagnosticCollection);
   }
@@ -55,13 +58,16 @@ export function subscribeToDocumentChanges(context: vscode.ExtensionContext, dia
  * @param doc protocol buffer document to analyze
  * @param diagnosticCollection diagnostic collection
  */
-export async function refreshDiagnostics(doc: vscode.TextDocument, diagnosticCollection: vscode.DiagnosticCollection): Promise<void> {
+export async function refreshDiagnostics(
+  doc: vscode.TextDocument,
+  diagnosticCollection: vscode.DiagnosticCollection
+): Promise<void> {
   if (vscode.languages.match(PROTOBUF_SELECTOR, doc) === 0) {
     diagnosticCollection.delete(doc.uri);
     return;
   }
 
-  if (isExecutableAvailable() === undefined) {
+  if (Linter.isExecutableAvailable() === undefined) {
     try {
       const result = await pickPathConfiguration();
       if (result === undefined) {
@@ -81,5 +87,4 @@ export async function refreshDiagnostics(doc: vscode.TextDocument, diagnosticCol
   });
 
   diagnosticCollection.set(doc.uri, diagnostics);
-
 }

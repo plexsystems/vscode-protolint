@@ -1,35 +1,16 @@
 import * as vscode from 'vscode';
-import * as cp from 'child_process';
 
-import { PROTOLINT_REPO_URI, PATH_CONFIGURATION_KEY, FAILOVER_PATH } from './constants';
+import { PROTOLINT_REPO_URI, PATH_CONFIGURATION_KEY } from './constants';
+import Linter from './linter';
 
-export function isExecutableValid(path: string): boolean {
-  const result = cp.spawnSync(path, ['version']);
-  if (result.status !== 0) {
-    return false;
-  }
-
-  return true;
-}
-
-export function isExecutableAvailable(): string | undefined {
-  let executablePath = vscode.workspace.getConfiguration('protolint').get<string>(PATH_CONFIGURATION_KEY);
-  if (!executablePath) {
-    // Failover when the key is missing in the configuration.
-    executablePath = FAILOVER_PATH;
-  }
-
-  if (isExecutableValid(executablePath)) {
-    return executablePath;
-  }
-
-  return undefined;
-}
-
-// Attempts to pick the protolint executable path via the OS UI.
-// If the path is correct, updates the extension configuration and returns
-// this path.
-// If user fails to provide the valid executable path, returns undefined.
+/**
+ * Attempts to pick the `protolint` executable path via the OS UI.
+ * Validates the path via {@link Linter.isExecutableValid}. 
+ * If the path is correct, updates the extension configuration and returns
+ * this path.
+ * 
+ * @returns the executable path, if the user locates the valid one, otherwise `undefined`.
+ */
 export async function locateExecutable(): Promise<string | undefined> {
   try {
     const userInput = await vscode.window.showOpenDialog({
@@ -45,7 +26,7 @@ export async function locateExecutable(): Promise<string | undefined> {
 
     const path = userInput[0].fsPath;
 
-    if (isExecutableValid(path)) {
+    if (Linter.isExecutableValid(path)) {
       const config = vscode.workspace.getConfiguration('protolint');
 
       // Always updates the global user settings, assuming the `path`
@@ -63,8 +44,15 @@ export async function locateExecutable(): Promise<string | undefined> {
   }
 }
 
+/**
+ * If `protolint` executable isn't available with the current extension settings, 
+ * shows a warning with buttons:
+ * - Download (opens {@link PROTOLINT_REPO_URI} in the browser).
+ * - Find the file (runs {@link locateExecutable}).
+ * @returns the executable path, if the user locates the valid one, otherwise `undefined`.
+ */
 export async function pickPathConfiguration(): Promise<string | undefined> {
-  const path = isExecutableAvailable();
+  const path = Linter.isExecutableAvailable();
   if (path !== undefined) {
     return path;
   }
