@@ -65,7 +65,7 @@ export default class Linter {
    * `/{prefix}/{timestamp}/{doc_version}/{basename}`.
    * 
    * Value examples:
-   * - Windows: `\\\\?\\pipe\1681751977527\1\my.proto`
+   * - Windows: `\\\\?\\pipe\\1681751977527\\1\\my.proto`
    * - others: `/tmp/1681751977527/1/my.proto`
    * 
    * @returns an IPC connection path to get the text
