@@ -15,7 +15,7 @@
     "url": "https://github.com/plexsystems/vscode-protolint/issues"
   },
   "engines": {
-    "vscode": "^1.14.0"
+    "vscode": "^1.31.0"
   },
   "categories": [
     "Linters"
@@ -38,16 +38,33 @@
         "title": "Protolint: Lint protobuf file"
       }
     ],
+    "keybindings":[
+      {
+        "command": "protolint.lint",
+        "key": "alt+shift+l",
+        "mac": "alt+shift+l",
+        "linux": "alt+shift+l",
+        "when": "editorTextFocus"
+      }
+    ],
     "configuration": {
-      "type": "object",
       "title": "protolint",
       "properties": {
         "protolint.path": {
           "type":  "string",
+          "scope": "machine",
           "default": "protolint",
-          "description": "Path of the protolint executable."
+          "markdownDescription": "Path of the protolint executable.\n\nDownload from: https://github.com/yoheimuta/protolint"
         }
       }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "protolint.lint",
+          "when": "editorLangId == proto3 || editorLangId == proto"
+        }
+      ]
     }
   },
   "scripts": {
@@ -62,7 +79,7 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.0.8",
-    "@types/vscode": "^1.14.0",
+    "@types/vscode": "^1.31.0",
     "mocha": "^9.2.2",
     "rimraf": "^2.6.3",
     "tslint": "^5.8.0",
