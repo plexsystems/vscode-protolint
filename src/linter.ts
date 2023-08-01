@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import * as util from 'util';
 import * as path from 'path';
 
+import { getConfig } from './config';
 import { ProtoError, parseProtoError } from './protoError';
 
 export interface LinterError {
@@ -44,11 +45,7 @@ export default class Linter {
     let currentFile = this.codeDocument.uri.fsPath;
     let currentDirectory = path.dirname(currentFile);
 
-    let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
-    if (!protoLintPath) {
-      protoLintPath = "protolint"
-    }
-
+    let { protoLintPath } = getConfig();
     const cmd = `${protoLintPath} lint "${currentFile}"`;
 
     // Execute the protolint binary and store the output from standard error.
