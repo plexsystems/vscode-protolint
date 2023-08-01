@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as cp from 'child_process';
 import Linter, { LinterError } from './linter';
+import { reloadConfig } from './config';
 
 const diagnosticCollection = vscode.languages.createDiagnosticCollection("protolint");
 
@@ -17,16 +17,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('protolint.lint');
   });
 
-  // Verify that protolint can be successfully executed on the host machine by running the version command.
-  // In the event the binary cannot be executed, tell the user where to download protolint from.
-  let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
-  if (!protoLintPath) {
-    protoLintPath = "protolint"
-  }
+  vscode.workspace.onDidChangeConfiguration((e: vscode.ConfigurationChangeEvent) => {
+    if (e.affectsConfiguration('protolint')) {
+      reloadConfig();
+    }
+  });
 
-  const result = cp.spawnSync(protoLintPath, ['version']);
-  if (result.status !== 0) {
-    vscode.window.showErrorMessage("protolint was not detected using path `" + protoLintPath + "`. Download from: https://github.com/yoheimuta/protolint");
+  if (!reloadConfig()) {
     return;
   }
 }
@@ -34,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
 function runLint() {
   let editor = vscode.window.activeTextEditor;
   if (!editor) {
-      return;
+    return;
   }
 
   // We only want to run protolint on documents that are known to be
