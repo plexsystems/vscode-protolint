@@ -42,7 +42,7 @@ export default class Linter {
     }
 
     let currentFile = this.codeDocument.uri.fsPath;
-    let currentDirectory = path.dirname(currentFile);
+    let wsRoot = vscode.workspace.workspaceFolders[0].uri.path
 
     let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
     if (!protoLintPath) {
@@ -59,7 +59,7 @@ export default class Linter {
     let lintResults: string = "";
 
     await exec(cmd, {
-      cwd: currentDirectory
+      cwd: wsRoot
     }).catch((error: any) => lintResults = error.stderr);
 
     return lintResults;
