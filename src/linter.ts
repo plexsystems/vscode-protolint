@@ -1,7 +1,6 @@
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
 import * as util from 'util';
-import * as path from 'path';
 
 import { ProtoError, parseProtoError } from './protoError';
 
