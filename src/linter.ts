@@ -42,7 +42,11 @@ export default class Linter {
     }
 
     let currentFile = this.codeDocument.uri.fsPath;
-    let currentDirectory = path.dirname(currentFile);
+    let startFolder = path.dirname(currentFile);
+    let wsRoot = getWorkspaceRootPath(currentFile)
+    if (wsRoot) {
+      startFolder = wsRoot;
+    }
 
     let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
     if (!protoLintPath) {
@@ -59,7 +63,7 @@ export default class Linter {
     let lintResults: string = "";
 
     await exec(cmd, {
-      cwd: currentDirectory
+      cwd: startFolder
     }).catch((error: any) => lintResults = error.stderr);
 
     return lintResults;
@@ -84,4 +88,16 @@ export default class Linter {
 
     return result;
   }
+}
+
+function getWorkspaceRootPath(filePath: string): string | undefined {
+  let workspaceFolders = vscode.workspace.workspaceFolders;
+  if (workspaceFolders) {
+    for (let folder of workspaceFolders) {
+      if (filePath.startsWith(folder.uri.fsPath)) {
+        return folder.uri.fsPath;
+      }
+    }
+  }
+  return undefined;
 }
