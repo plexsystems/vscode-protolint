@@ -1,6 +1,7 @@
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
 import * as util from 'util';
+import * as path from 'path';
 
 import { ProtoError, parseProtoError } from './protoError';
 
@@ -41,7 +42,11 @@ export default class Linter {
     }
 
     let currentFile = this.codeDocument.uri.fsPath;
-    let wsRoot = vscode.workspace.workspaceFolders[0].uri.path
+    let startFolder = path.dirname(currentFile);
+    let wsRoot = getWorkspaceRootPath(currentFile)
+    if (wsRoot) {
+      startFolder = wsRoot;
+    }
 
     let protoLintPath = vscode.workspace.getConfiguration('protolint').get<string>('path');
     if (!protoLintPath) {
@@ -58,7 +63,7 @@ export default class Linter {
     let lintResults: string = "";
 
     await exec(cmd, {
-      cwd: wsRoot
+      cwd: startFolder
     }).catch((error: any) => lintResults = error.stderr);
 
     return lintResults;
@@ -83,4 +88,16 @@ export default class Linter {
 
     return result;
   }
+}
+
+function getWorkspaceRootPath(filePath: string): string | undefined {
+  let workspaceFolders = vscode.workspace.workspaceFolders;
+  if (workspaceFolders) {
+    for (let folder of workspaceFolders) {
+      if (filePath.startsWith(folder.uri.fsPath)) {
+        return folder.uri.fsPath;
+      }
+    }
+  }
+  return undefined;
 }
